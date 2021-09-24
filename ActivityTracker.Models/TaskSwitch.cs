@@ -1,18 +1,16 @@
 ﻿using System;
 using System.ComponentModel;
-using System.Diagnostics;
 using System.Runtime.CompilerServices;
 
 namespace ActivityTracker.Models
 {
     public class TaskSwitch : INotifyPropertyChanged
     {
-        private readonly Process _process;
         private long _endTicks;
 
-        public int Id => _process.Id;
-        public string ApplicationName => _process.ProcessName;
-        public string WindowTitle => _process.MainWindowTitle;
+        public int ProcessId { get; }
+        public string ApplicationName { get; }
+        public string WindowTitle { get; }
         public long StartTicks { get; }
         public long EndTicks
         {
@@ -29,9 +27,12 @@ namespace ActivityTracker.Models
 
         public event PropertyChangedEventHandler PropertyChanged;
 
-        public TaskSwitch(Process process)
+        public TaskSwitch(int processId, string applicationName, string windowTitle)
         {
-            _process = process;
+            ProcessId = processId;
+            ApplicationName = applicationName;
+            WindowTitle = windowTitle;
+
             StartTicks = DateTime.UtcNow.Ticks;
         }
 

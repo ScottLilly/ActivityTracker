@@ -15,7 +15,7 @@ namespace ActivityTracker.ViewModels
 
         public void RecordTaskSwitch()
         {
-            Process process = ProcessService.GetActiveProcess();
+            using Process process = ProcessService.GetActiveProcess();
 
             // Application was focused, but was closed
             if(process == null)
@@ -38,15 +38,15 @@ namespace ActivityTracker.ViewModels
 
             // Don't add an entry if we are "switching" to the same process
             // or switching to a program with no title (window)
-            if (LatestTaskSwitch?.Id == process.Id ||
-                string.IsNullOrWhiteSpace(process.MainWindowTitle))
+            if(LatestTaskSwitch?.ProcessId == process.Id ||
+               string.IsNullOrWhiteSpace(process.MainWindowTitle))
             {
                 return;
             }
 
             LatestTaskSwitch?.EndTaskFocus();
 
-            TaskSwitchLogEntries.Add(new TaskSwitch(process));
+            TaskSwitchLogEntries.Add(new TaskSwitch(process.Id, process.ProcessName, process.MainWindowTitle));
         }
     }
 }
