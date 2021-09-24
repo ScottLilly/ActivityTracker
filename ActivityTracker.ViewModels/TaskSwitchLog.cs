@@ -11,20 +11,17 @@ namespace ActivityTracker.ViewModels
         public ObservableCollection<TaskSwitch> TaskSwitchLogEntries { get; } =
             new ObservableCollection<TaskSwitch>();
 
-        private TaskSwitch LatestTaskSwitch => TaskSwitchLogEntries.LastOrDefault();
+        private TaskSwitch LatestTaskSwitch => 
+            TaskSwitchLogEntries.LastOrDefault();
 
         public void RecordTaskSwitch()
         {
             using Process process = ProcessService.GetActiveProcess();
 
-            // Application was focused, but was closed
             if(process == null)
             {
-                if(LatestTaskSwitch?.EndTicks != null)
-                {
-                    LatestTaskSwitch?.EndTaskFocus();
-                    return;
-                }
+                EndCurrentTask();
+                return;
             }
 
             // Don't record time for the ActivityTracker app
@@ -44,9 +41,14 @@ namespace ActivityTracker.ViewModels
                 return;
             }
 
-            LatestTaskSwitch?.EndTaskFocus();
+            EndCurrentTask();
 
             TaskSwitchLogEntries.Add(new TaskSwitch(process.Id, process.ProcessName, process.MainWindowTitle));
+        }
+
+        public void EndCurrentTask()
+        {
+            LatestTaskSwitch?.EndTaskFocus();
         }
     }
 }

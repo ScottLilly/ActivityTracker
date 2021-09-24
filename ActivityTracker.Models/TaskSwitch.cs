@@ -38,7 +38,10 @@ namespace ActivityTracker.Models
 
         public void EndTaskFocus()
         {
-            EndTicks = DateTime.UtcNow.Ticks;
+            if(EndTicks == 0)
+            {
+                EndTicks = DateTime.UtcNow.Ticks;
+            }
         }
 
         protected virtual void OnPropertyChanged([CallerMemberName] string propertyName = "")

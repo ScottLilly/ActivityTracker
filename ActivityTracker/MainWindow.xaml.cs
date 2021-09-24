@@ -1,6 +1,7 @@
-﻿using ActivityTracker.ViewModels;
+﻿using System.ComponentModel;
 using System.Windows;
 using System.Windows.Automation;
+using ActivityTracker.ViewModels;
 
 namespace ActivityTracker
 {
@@ -21,6 +22,18 @@ namespace ActivityTracker
             {
                 (DataContext as TaskSwitchLog).RecordTaskSwitch();
             });
+        }
+
+        protected override void OnClosing(CancelEventArgs e)
+        {
+            Application.Current?.Dispatcher?.Invoke(() =>
+            {
+                (DataContext as TaskSwitchLog).EndCurrentTask();
+            });
+
+            // TODO: Add entries to "database"
+
+            base.OnClosing(e);
         }
     }
 }
