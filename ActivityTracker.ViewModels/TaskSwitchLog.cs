@@ -17,9 +17,28 @@ namespace ActivityTracker.ViewModels
         {
             Process process = ProcessService.GetActiveProcess();
 
+            // Application was focused, but was closed
+            if(process == null)
+            {
+                if(LatestTaskSwitch?.EndTicks != null)
+                {
+                    LatestTaskSwitch?.EndTaskFocus();
+                    return;
+                }
+            }
+
+            // Don't record time for the ActivityTracker app
+            // TODO: Maybe make this a configurable setting
+#if DEBUG
+            if(process.Id == System.Environment.ProcessId)
+            {
+                return;
+            }
+#endif
+
             // Don't add an entry if we are "switching" to the same process
             // or switching to a program with no title (window)
-            if (LatestTaskSwitch?.Process.Id == process.Id ||
+            if (LatestTaskSwitch?.Id == process.Id ||
                 string.IsNullOrWhiteSpace(process.MainWindowTitle))
             {
                 return;

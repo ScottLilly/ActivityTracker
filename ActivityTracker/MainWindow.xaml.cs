@@ -1,5 +1,4 @@
 ﻿using ActivityTracker.ViewModels;
-using System;
 using System.Windows;
 using System.Windows.Automation;
 
@@ -14,8 +13,6 @@ namespace ActivityTracker
             DataContext = new TaskSwitchLog();
 
             Automation.AddAutomationFocusChangedEventHandler(OnFocusChangedHandler);
-            Automation.AddAutomationEventHandler(WindowPattern.WindowOpenedEvent,
-                AutomationElement.RootElement, TreeScope.Children, OnWindowOpened);
         }
 
         private void OnFocusChangedHandler(object sender, AutomationFocusChangedEventArgs e)
@@ -24,22 +21,6 @@ namespace ActivityTracker
             {
                 (DataContext as TaskSwitchLog).RecordTaskSwitch();
             });
-        }
-
-
-        private static void OnWindowOpened(object sender, AutomationEventArgs automationEventArgs)
-        {
-            try
-            {
-                var element = sender as AutomationElement;
-                if (element != null)
-                {
-                    Console.WriteLine("New Window opened: {0}", element.Current.Name);
-                }
-            }
-            catch (ElementNotAvailableException)
-            {
-            }
         }
     }
 }

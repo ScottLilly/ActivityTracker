@@ -7,16 +7,19 @@ namespace ActivityTracker.Models
 {
     public class TaskSwitch : INotifyPropertyChanged
     {
-        private long endTicks;
+        private readonly Process _process;
+        private long _endTicks;
 
-        public Process Process { get; }
+        public int Id => _process.Id;
+        public string ApplicationName => _process.ProcessName;
+        public string WindowTitle => _process.MainWindowTitle;
         public long StartTicks { get; }
         public long EndTicks
         {
-            get => endTicks;
+            get => _endTicks;
             private set
             {
-                endTicks = value;
+                _endTicks = value;
                 OnPropertyChanged();
                 OnPropertyChanged(nameof(Duration));
             }
@@ -24,12 +27,11 @@ namespace ActivityTracker.Models
 
         public TimeSpan? Duration => EndTicks == 0 ? null : new TimeSpan(EndTicks - StartTicks);
 
-
         public event PropertyChangedEventHandler PropertyChanged;
 
         public TaskSwitch(Process process)
         {
-            Process = process;
+            _process = process;
             StartTicks = DateTime.UtcNow.Ticks;
         }
 

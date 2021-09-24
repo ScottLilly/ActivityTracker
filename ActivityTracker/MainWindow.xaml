@@ -34,10 +34,10 @@
             <DataGrid.Columns>
                 <DataGridTextColumn Header="Program Name"
                                     Width="Auto"
-                                    Binding="{Binding Process.ProcessName, Mode=OneWay}"/>
+                                    Binding="{Binding ApplicationName, Mode=OneWay}"/>
                 <DataGridTextColumn Header="Window Title"
                                     Width="*"
-                                    Binding="{Binding Process.MainWindowTitle, Mode=OneWay}"/>
+                                    Binding="{Binding WindowTitle, Mode=OneWay}"/>
                 <DataGridTextColumn Header="Duration"
                                     Width="135"
                                     Binding="{Binding Duration, Mode=OneWay, UpdateSourceTrigger=PropertyChanged}"/>
