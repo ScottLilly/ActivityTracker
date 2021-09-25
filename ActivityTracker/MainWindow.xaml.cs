@@ -29,7 +29,7 @@ namespace ActivityTracker
         {
             Application.Current?.Dispatcher?.Invoke(() =>
             {
-                (DataContext as TaskSwitchLog).EndCurrentTask();
+                (DataContext as TaskSwitchLog).EndCurrentProgramFocus();
             });
 
             // TODO: Add entries to "database"

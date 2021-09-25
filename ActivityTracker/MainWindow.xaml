@@ -44,7 +44,7 @@
         
         <DataGrid Grid.Row="1" Grid.Column="0"
                   Margin="5,5,5,5"
-                  ItemsSource="{Binding TaskSwitchLogEntries}"
+                  ItemsSource="{Binding LogEntries}"
                   AutoGenerateColumns="False"
                   IsReadOnly="True"
                   CanUserAddRows="False"
@@ -58,7 +58,7 @@
             <DataGrid.Columns>
                 <DataGridTextColumn Header="Program Name"
                                     Width="Auto"
-                                    Binding="{Binding ApplicationName, Mode=OneWay}"/>
+                                    Binding="{Binding DisplayName, Mode=OneWay}"/>
                 <DataGridTextColumn Header="Window Title"
                                     Width="*"
                                     Binding="{Binding WindowTitle, Mode=OneWay}"/>
