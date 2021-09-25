@@ -35,5 +35,10 @@ namespace ActivityTracker
 
             base.OnClosing(e);
         }
+
+        private void ExitMenuItem_Click(object sender, RoutedEventArgs e)
+        {
+            Close();
+        }
     }
 }

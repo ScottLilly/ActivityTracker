@@ -12,13 +12,28 @@
 
     <Grid>
         <Grid.RowDefinitions>
+            <RowDefinition Height="Auto"/>
             <RowDefinition Height="*"/>
         </Grid.RowDefinitions>
         <Grid.ColumnDefinitions>
             <ColumnDefinition Width="*"/>
         </Grid.ColumnDefinitions>
 
-        <DataGrid Grid.Row="0" Grid.Column="0"
+        <Menu Grid.Row="0" Grid.Column="0"
+              FontSize="11pt">
+            <MenuItem Header="Settings">
+                <Separator/>
+                <MenuItem Header="Exit"
+                          Click="ExitMenuItem_Click"/>
+            </MenuItem>
+            <MenuItem Header="Help">
+                <MenuItem Header="Help"/>
+                <Separator/>
+                <MenuItem Header="About"/>
+            </MenuItem>
+        </Menu>
+        
+        <DataGrid Grid.Row="1" Grid.Column="0"
                   Margin="5,5,5,5"
                   ItemsSource="{Binding TaskSwitchLogEntries}"
                   AutoGenerateColumns="False"
