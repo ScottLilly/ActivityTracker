@@ -11,4 +11,8 @@
     <ProjectReference Include="..\ActivityTracker.ViewModels\ActivityTracker.ViewModels.csproj" />
   </ItemGroup>
 
+  <ItemGroup>
+    <Folder Include="CustomConverters\" />
+  </ItemGroup>
+
 </Project>

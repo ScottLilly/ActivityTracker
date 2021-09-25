@@ -2,6 +2,7 @@
 using System.Windows;
 using System.Windows.Automation;
 using ActivityTracker.ViewModels;
+using ActivityTracker.Windows;
 
 namespace ActivityTracker
 {
@@ -36,9 +37,23 @@ namespace ActivityTracker
             base.OnClosing(e);
         }
 
-        private void ExitMenuItem_Click(object sender, RoutedEventArgs e)
+        private void Exit_Click(object sender, RoutedEventArgs e)
         {
             Close();
+        }
+
+        private void Help_Click(object sender, RoutedEventArgs e)
+        {
+            Help help = new Help();
+            help.Owner = this;
+            help.ShowDialog();
+        }
+
+        private void About_Click(object sender, RoutedEventArgs e)
+        {
+            About about = new About();
+            about.Owner = this;
+            about.ShowDialog();
         }
     }
 }

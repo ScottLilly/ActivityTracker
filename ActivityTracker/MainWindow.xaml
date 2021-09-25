@@ -27,15 +27,17 @@
                 <Separator/>
                 <MenuItem Header="Exit"
                           InputGestureText="Alt+F4"
-                          Click="ExitMenuItem_Click"/>
+                          Click="Exit_Click"/>
             </MenuItem>
             <MenuItem Header="Customize">
                 <MenuItem Header="Program Names"/>
             </MenuItem>
             <MenuItem Header="Help">
-                <MenuItem Header="Help"/>
+                <MenuItem Header="Help"
+                          Click="Help_Click"/>
                 <Separator/>
-                <MenuItem Header="About"/>
+                <MenuItem Header="About"
+                          Click="About_Click"/>
             </MenuItem>
         </Menu>
         
