@@ -4,12 +4,22 @@ using System.Runtime.CompilerServices;
 
 namespace ActivityTracker.Models
 {
-    public class TaskSwitch : INotifyPropertyChanged
+    public class LogEntry : INotifyPropertyChanged
     {
         private long _endTicks;
+        private string _displayName;
 
         public int ProcessId { get; }
         public string ApplicationName { get; }
+        public string DisplayName
+        {
+            get => _displayName;
+            private set
+            {
+                _displayName = value;
+                OnPropertyChanged();
+            }
+        }
         public string WindowTitle { get; }
         public long StartTicks { get; }
         public long EndTicks
@@ -27,16 +37,17 @@ namespace ActivityTracker.Models
 
         public event PropertyChangedEventHandler PropertyChanged;
 
-        public TaskSwitch(int processId, string applicationName, string windowTitle)
+        public LogEntry(int processId, string processName, string windowTitle, string displayName = "")
         {
             ProcessId = processId;
-            ApplicationName = applicationName;
+            ApplicationName = processName;
             WindowTitle = windowTitle;
+            DisplayName = string.IsNullOrWhiteSpace(displayName) ? processName : displayName;
 
             StartTicks = DateTime.UtcNow.Ticks;
         }
 
-        public void EndTaskFocus()
+        public void EndProgramFocus()
         {
             if(EndTicks == 0)
             {

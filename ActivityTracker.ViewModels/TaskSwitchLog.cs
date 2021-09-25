@@ -1,18 +1,23 @@
-﻿using System.Collections.ObjectModel;
+﻿using System;
+using System.Collections.ObjectModel;
 using System.Diagnostics;
 using System.Linq;
 using ActivityTracker.Engine;
 using ActivityTracker.Models;
+using ActivityTracker.Repository;
 
 namespace ActivityTracker.ViewModels
 {
     public class TaskSwitchLog
     {
-        public ObservableCollection<TaskSwitch> TaskSwitchLogEntries { get; } =
-            new ObservableCollection<TaskSwitch>();
+        private readonly DataRepository _dataRepository =
+            DataRepository.GetInstance();
 
-        private TaskSwitch LatestTaskSwitch => 
-            TaskSwitchLogEntries.LastOrDefault();
+        public ObservableCollection<LogEntry> LogEntries { get; } =
+            new ObservableCollection<LogEntry>();
+
+        private LogEntry LatestFocusSwitch =>
+            LogEntries.LastOrDefault();
 
         public void RecordTaskSwitch()
         {
@@ -20,14 +25,14 @@ namespace ActivityTracker.ViewModels
 
             if(process == null)
             {
-                EndCurrentTask();
+                EndCurrentProgramFocus();
                 return;
             }
 
             // Don't record time for the ActivityTracker app
             // TODO: Maybe make this a configurable setting
 #if DEBUG
-            if(process.Id == System.Environment.ProcessId)
+            if(process.Id == Environment.ProcessId)
             {
                 return;
             }
@@ -35,20 +40,28 @@ namespace ActivityTracker.ViewModels
 
             // Don't add an entry if we are "switching" to the same process
             // or switching to a program with no title (window)
-            if(LatestTaskSwitch?.ProcessId == process.Id ||
+            if(LatestFocusSwitch?.ProcessId == process.Id ||
                string.IsNullOrWhiteSpace(process.MainWindowTitle))
             {
                 return;
             }
 
-            EndCurrentTask();
+            EndCurrentProgramFocus();
 
-            TaskSwitchLogEntries.Add(new TaskSwitch(process.Id, process.ProcessName, process.MainWindowTitle));
+            LogEntries.Add(new LogEntry(process.Id, process.ProcessName, process.MainWindowTitle, GetProcessDisplayName(process)));
         }
 
-        public void EndCurrentTask()
+        public void EndCurrentProgramFocus()
         {
-            LatestTaskSwitch?.EndTaskFocus();
+            LatestFocusSwitch?.EndProgramFocus();
+        }
+
+        private string GetProcessDisplayName(Process process)
+        {
+            Program program =
+                _dataRepository.Programs.FirstOrDefault(p => p.ProcessName.Equals(process.ProcessName, StringComparison.OrdinalIgnoreCase));
+
+            return program?.DisplayName ?? process.ProcessName;
         }
     }
 }
