@@ -21,10 +21,16 @@
 
         <Menu Grid.Row="0" Grid.Column="0"
               FontSize="11pt">
-            <MenuItem Header="Settings">
+            <MenuItem Header="File">
+                <MenuItem Header="View Detailed Entries"/>
+                <MenuItem Header="View Summary"/>
                 <Separator/>
                 <MenuItem Header="Exit"
+                          InputGestureText="Alt+F4"
                           Click="ExitMenuItem_Click"/>
+            </MenuItem>
+            <MenuItem Header="Customize">
+                <MenuItem Header="Program Names"/>
             </MenuItem>
             <MenuItem Header="Help">
                 <MenuItem Header="Help"/>
