@@ -63,8 +63,10 @@
                                     Width="*"
                                     Binding="{Binding WindowTitle, Mode=OneWay}"/>
                 <DataGridTextColumn Header="Duration"
-                                    Width="135"
-                                    Binding="{Binding Duration, Mode=OneWay, UpdateSourceTrigger=PropertyChanged}"/>
+                                    HeaderStyle="{StaticResource CenterGridHeaderStyle}"
+                                    ElementStyle="{StaticResource CenterAlignCell}"
+                                    Width="100"
+                                    Binding="{Binding Duration, StringFormat=\{0:hh\\:mm\\:ss\\.fff\}, Mode=OneWay, UpdateSourceTrigger=PropertyChanged}"/>
             </DataGrid.Columns>
             
         </DataGrid>
