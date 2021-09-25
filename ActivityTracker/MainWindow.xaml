@@ -30,7 +30,8 @@
                           Click="Exit_Click"/>
             </MenuItem>
             <MenuItem Header="Customize">
-                <MenuItem Header="Program Names"/>
+                <MenuItem Header="Programs"/>
+                <MenuItem Header="Preferences"/>
             </MenuItem>
             <MenuItem Header="Help">
                 <MenuItem Header="Help"
