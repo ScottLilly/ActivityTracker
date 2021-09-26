@@ -1,12 +1,17 @@
-﻿using ActivityTracker.Models;
+﻿using System;
 using System.Collections.ObjectModel;
+using System.Linq;
+using ActivityTracker.Models;
 
 namespace ActivityTracker.Repository
 {
     public class DataRepository
     {
-        private static readonly DataRepository s_dataRepository = 
+        private static readonly DataRepository s_dataRepository =
             new DataRepository();
+
+        public ObservableCollection<LogEntry> LogEntries { get; } =
+            new ObservableCollection<LogEntry>();
 
         public ObservableCollection<Program> Programs { get; } =
             new ObservableCollection<Program>();
@@ -19,6 +24,11 @@ namespace ActivityTracker.Repository
         public static DataRepository GetInstance()
         {
             return s_dataRepository;
+        }
+
+        public Program GetProgramByProcessName(string processName)
+        {
+            return Programs.FirstOrDefault(p => p.ProcessName.Equals(processName, StringComparison.OrdinalIgnoreCase));
         }
 
         // Temporarily hard-coded population, until persistent storage technique is decided
