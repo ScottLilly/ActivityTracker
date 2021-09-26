@@ -6,6 +6,7 @@
 
   <ItemGroup>
     <ProjectReference Include="..\ActivityTracker.Models\ActivityTracker.Models.csproj" />
+    <ProjectReference Include="..\ActivityTracker.Repository\ActivityTracker.Repository.csproj" />
   </ItemGroup>
 
 </Project>
