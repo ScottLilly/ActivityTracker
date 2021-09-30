@@ -31,30 +31,53 @@ namespace ActivityTracker.Engine
         {
             using Process process = GetActiveProcess();
 
-            if(process == null)
+            // This happens if a focused program is minimized or closed
+            if (process == null ||
+               (process.ProcessName.Equals("explorer", StringComparison.InvariantCulture) &&
+                string.IsNullOrWhiteSpace(process.MainWindowTitle)))
             {
                 EndCurrentProgramFocus();
                 return;
             }
 
-            // Don't add an entry if we are "switching" to the same process
-            // or switching to a program with no title (window)
-            if (s_dataRepository.LogEntries.LastOrDefault()?.ProcessId == process.Id ||
-               string.IsNullOrWhiteSpace(process.MainWindowTitle))
+            // This happens when a non-focused program is minimized or closed
+            if (string.IsNullOrWhiteSpace(process.MainWindowTitle))
             {
                 return;
             }
 
-            EndCurrentProgramFocus();
+            // Don't add a new log entry if we are "switching" to the same process/program,
+            // unless the window title changed (a new tab/option was selected in the program)
+            if (ProcessMatchesCurrentProgramWithFocus(process))
+            {
+                return;
+            }
 
-            string displayName = GetProcessDisplayName(process);
-
-            s_dataRepository.LogEntries.Add(new LogEntry(process.Id, process.ProcessName, process.MainWindowTitle, displayName));
+            AddNewLogEntry(process);
         }
 
         private static void EndCurrentProgramFocus()
         {
             s_dataRepository.LogEntries.LastOrDefault()?.EndProgramFocus();
+        }
+
+        private static bool ProcessMatchesCurrentProgramWithFocus(Process process)
+        {
+            LogEntry lastLogEntry = s_dataRepository.LogEntries.LastOrDefault();
+
+            return lastLogEntry?.ProcessId == process.Id &&
+                lastLogEntry?.ApplicationName == process.ProcessName &&
+                lastLogEntry?.WindowTitle == process.MainWindowTitle &&
+                lastLogEntry?.EndTicks == 0;
+        }
+
+        private static void AddNewLogEntry(Process process)
+        {
+            EndCurrentProgramFocus();
+
+            string displayName = GetProcessDisplayName(process);
+
+            s_dataRepository.LogEntries.Add(new LogEntry(process.Id, process.ProcessName, process.MainWindowTitle, displayName));
         }
 
         private static string GetProcessDisplayName(Process process)
