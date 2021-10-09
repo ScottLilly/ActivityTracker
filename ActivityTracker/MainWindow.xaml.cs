@@ -21,7 +21,7 @@ namespace ActivityTracker
         {
             Application.Current?.Dispatcher?.Invoke(() =>
             {
-                (DataContext as ProgramFocusSwitchLog).RecordProgramFocusSwitch();
+                (DataContext as ProgramFocusSwitchLog)?.RecordProgramFocusSwitch();
             });
         }
 
@@ -29,7 +29,7 @@ namespace ActivityTracker
         {
             Application.Current?.Dispatcher?.Invoke(() =>
             {
-                (DataContext as ProgramFocusSwitchLog).RecordProgramFocusSwitch();
+                (DataContext as ProgramFocusSwitchLog)?.RecordProgramFocusSwitch();
             });
 
             // TODO: Add entries to "database"

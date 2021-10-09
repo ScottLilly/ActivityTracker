@@ -4,7 +4,7 @@ using System.Runtime.CompilerServices;
 
 namespace ActivityTracker.Models
 {
-    public class LogEntry : INotifyPropertyChanged
+    public sealed class LogEntry : INotifyPropertyChanged
     {
         private long _endTicks;
         private string _displayName;
@@ -55,7 +55,7 @@ namespace ActivityTracker.Models
             }
         }
 
-        protected virtual void OnPropertyChanged([CallerMemberName] string propertyName = "")
+        private void OnPropertyChanged([CallerMemberName] string propertyName = "")
         {
             PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
         }
