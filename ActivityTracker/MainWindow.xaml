@@ -5,7 +5,7 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:viewModels="clr-namespace:ActivityTracker.ViewModels;assembly=ActivityTracker.ViewModels" 
         xmlns:local="clr-namespace:ActivityTracker.CustomConverters"
-        d:DataContext="{d:DesignInstance viewModels:TaskSwitchLog}"
+        d:DataContext="{d:DesignInstance viewModels:ProgramFocusSwitchLog}"
         mc:Ignorable="d"
         Title="Activity Tracker"
         FontSize="11pt"
