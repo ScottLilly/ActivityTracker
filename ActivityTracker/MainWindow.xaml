@@ -3,12 +3,17 @@
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-        xmlns:viewModels="clr-namespace:ActivityTracker.ViewModels;assembly=ActivityTracker.ViewModels"
+        xmlns:viewModels="clr-namespace:ActivityTracker.ViewModels;assembly=ActivityTracker.ViewModels" 
+        xmlns:local="clr-namespace:ActivityTracker.CustomConverters"
         d:DataContext="{d:DesignInstance viewModels:TaskSwitchLog}"
         mc:Ignorable="d"
         Title="Activity Tracker"
         FontSize="11pt"
         Height="450" Width="800">
+    
+    <Window.Resources>
+        <local:DurationConverter x:Key="DurationValueConverter"/>
+    </Window.Resources>
 
     <Grid>
         <Grid.RowDefinitions>
@@ -66,7 +71,7 @@
                                     HeaderStyle="{StaticResource CenterGridHeaderStyle}"
                                     ElementStyle="{StaticResource CenterAlignCell}"
                                     Width="100"
-                                    Binding="{Binding Duration, StringFormat=\{0:hh\\:mm\\:ss\\.fff\}, Mode=OneWay, UpdateSourceTrigger=PropertyChanged}"/>
+                                    Binding="{Binding Duration, Converter={StaticResource DurationValueConverter}, Mode=OneWay, UpdateSourceTrigger=PropertyChanged}"/>
             </DataGrid.Columns>
             
         </DataGrid>
