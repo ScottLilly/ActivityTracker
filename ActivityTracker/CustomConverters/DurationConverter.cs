@@ -26,15 +26,14 @@ namespace ActivityTracker.CustomConverters
             }
         }
 
-        private string GetFormat(TimeSpan duration)
+        private static string GetFormat(TimeSpan duration)
         {
             return duration switch
             {
                 { Days: > 0 } => "{0:dd}day(s) {0:hh}h {0:mm}min {0:ss}sec",
                 { Hours: > 0 } => "{0:hh}h {0:mm}min {0:ss}sec",
                 { Minutes: > 0 } => "{0:mm}min {0:ss}sec",
-                //_ => "{0:ss} sec"
-                _ => "{0:hh}h {0:mm}min {0:ss}sec"
+                _ => "{0:ss} sec"
             };
         }
 
