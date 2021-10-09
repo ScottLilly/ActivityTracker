@@ -15,17 +15,8 @@ namespace ActivityTracker.Engine
         [DllImport("user32.dll")]
         private static extern IntPtr GetWindowThreadProcessId(IntPtr hWnd, out uint ProcessId);
 
-        private static DataRepository s_dataRepository =
+        private static readonly DataRepository s_dataRepository =
             DataRepository.GetInstance();
-
-        public static Process GetActiveProcess()
-        {
-            IntPtr hwnd = GetForegroundWindow();
-
-            GetWindowThreadProcessId(hwnd, out uint pid);
-
-            return Process.GetProcessById((int)pid);
-        }
 
         public static void RecordProgramFocusSwitch()
         {
@@ -56,6 +47,15 @@ namespace ActivityTracker.Engine
             AddNewLogEntry(process);
         }
 
+        private static Process GetActiveProcess()
+        {
+            IntPtr hwnd = GetForegroundWindow();
+
+            GetWindowThreadProcessId(hwnd, out uint pid);
+
+            return Process.GetProcessById((int)pid);
+        }
+
         private static void EndCurrentProgramFocus()
         {
             s_dataRepository.LogEntries.LastOrDefault()?.EndProgramFocus();
@@ -66,23 +66,31 @@ namespace ActivityTracker.Engine
             LogEntry lastLogEntry = s_dataRepository.LogEntries.LastOrDefault();
 
             return lastLogEntry?.ProcessId == process.Id &&
-                lastLogEntry?.ApplicationName == process.ProcessName &&
-                lastLogEntry?.WindowTitle == process.MainWindowTitle &&
-                lastLogEntry?.EndTicks == 0;
+                lastLogEntry.ApplicationName == process.ProcessName &&
+                lastLogEntry.WindowTitle == process.MainWindowTitle &&
+                lastLogEntry.EndTicks == 0;
         }
 
         private static void AddNewLogEntry(Process process)
         {
             EndCurrentProgramFocus();
 
-            string displayName = GetProcessDisplayName(process);
+            if (ShouldLogProcess(process))
+            {
+                string displayName = GetProcessDisplayName(process);
 
-            s_dataRepository.LogEntries.Add(new LogEntry(process.Id, process.ProcessName, process.MainWindowTitle, displayName));
+                s_dataRepository.LogEntries.Add(new LogEntry(process.Id, process.ProcessName, process.MainWindowTitle, displayName));
+            }
+        }
+
+        private static bool ShouldLogProcess(Process process)
+        {
+            return s_dataRepository.GetProgramByProcessName(process.ProcessName)?.ShouldLog ?? true;
         }
 
         private static string GetProcessDisplayName(Process process)
         {
-            string displayName = 
+            string displayName =
                 s_dataRepository.GetProgramByProcessName(process.ProcessName)?.DisplayName ?? "";
 
             return string.IsNullOrWhiteSpace(displayName) ? process.ProcessName : displayName;

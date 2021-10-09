@@ -1,0 +1,33 @@
+{
+  "Programs": [
+    {
+      "ProcessName": "ActivityTracker",
+      "ShouldLog": "false"
+    },
+    {
+      "ProcessName": "explorer",
+      "DisplayName": "File Explorer",
+      "ShouldLog": "true"
+    },
+    {
+      "ProcessName": "powershell",
+      "DisplayName": "PowerShell",
+      "ShouldLog": "true"
+    },
+    {
+      "ProcessName": "firefox",
+      "DisplayName": "Firefox",
+      "ShouldLog": "true"
+    },
+    {
+      "ProcessName": "devenv",
+      "DisplayName": "Visual Studio",
+      "ShouldLog": "true"
+    },
+    {
+      "ProcessName": "PngGauntlet",
+      "DisplayName": "PNGGauntlet",
+      "ShouldLog": "true"
+    }
+  ]
+}

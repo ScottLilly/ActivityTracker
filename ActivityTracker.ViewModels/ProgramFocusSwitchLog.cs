@@ -7,7 +7,7 @@ namespace ActivityTracker.ViewModels
 {
     public class ProgramFocusSwitchLog
     {
-        private DataRepository _dataRepository =
+        private readonly DataRepository _dataRepository =
             DataRepository.GetInstance();
 
         public ObservableCollection<LogEntry> LogEntries =>

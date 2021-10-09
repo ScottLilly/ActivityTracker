@@ -2,22 +2,30 @@
 using System.Collections.ObjectModel;
 using System.Linq;
 using ActivityTracker.Models;
+using Microsoft.Extensions.Configuration;
 
 namespace ActivityTracker.Repository
 {
     public class DataRepository
     {
+        private static IConfiguration _configuration;
+
         private static readonly DataRepository s_dataRepository =
             new DataRepository();
 
         public ObservableCollection<LogEntry> LogEntries { get; } =
             new ObservableCollection<LogEntry>();
 
-        public ObservableCollection<Program> Programs { get; } =
+        private ObservableCollection<Program> Programs { get; } =
             new ObservableCollection<Program>();
 
         private DataRepository()
         {
+            IConfigurationBuilder configurationBuilder =
+                new ConfigurationBuilder().AddJsonFile("Configuration.json");
+
+            _configuration = configurationBuilder.Build();
+
             LoadPrograms();
         }
 
@@ -31,19 +39,29 @@ namespace ActivityTracker.Repository
             return Programs.FirstOrDefault(p => p.ProcessName.Equals(processName, StringComparison.OrdinalIgnoreCase));
         }
 
-        // Temporarily hard-coded population, until persistent storage technique is decided
         private void LoadPrograms()
         {
             Programs.Clear();
 
-            // Common programs (these will be added by default, for all installations)
-            Programs.Add(new Program("explorer", "File Explorer"));
-            Programs.Add(new Program("powershell", "PowerShell"));
-            Programs.Add(new Program("firefox", "Firefox"));
+            IConfigurationSection programsSection =
+                _configuration.GetChildren().FirstOrDefault(s => s.Key.Equals("Programs"));
 
-            // Uncommon programs that I personally use (these would be manually added by the user)
-            Programs.Add(new Program("devenv", "Visual Studio"));
-            Programs.Add(new Program("PngGauntlet", "PNGGauntlet"));
+            if (programsSection == null)
+            {
+                return;
+            }
+
+            foreach (IConfigurationSection program in programsSection.GetChildren())
+            {
+                string processName = program["ProcessName"] ?? "";
+                string displayName = program["DisplayName"] ?? "";
+                bool shouldLog = Convert.ToBoolean(program["ShouldLog"] ?? "true");
+
+                if (!string.IsNullOrWhiteSpace(processName))
+                {
+                    Programs.Add(new Program(processName, displayName, shouldLog));
+                }
+            }
         }
     }
 }

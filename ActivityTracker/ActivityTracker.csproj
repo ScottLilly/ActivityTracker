@@ -11,4 +11,10 @@
     <ProjectReference Include="..\ActivityTracker.ViewModels\ActivityTracker.ViewModels.csproj" />
   </ItemGroup>
 
+  <ItemGroup>
+    <None Update="Configuration.json">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+  </ItemGroup>
+
 </Project>
